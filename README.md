@@ -2,7 +2,7 @@
 
 ## TODO
 
-* Lire [/papers/fusion.survey.pdf](/papers/fusion.survey.pdf) & rapport
+* Lire [/papers/fusion.survey.pdf](https://github.com/nprime496/building-floor-recognition/blob/main/papers/fusion_survey.pdf) & rapport
 
 * creer blocs de base 
 	* MFCC
