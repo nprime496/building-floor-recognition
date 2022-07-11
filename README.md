@@ -2,7 +2,11 @@
 
 ## TODO
 
-* baseline and first tests 
+* first classifier evaluation raw audio R+1, R+5
+* reporter setup
+* meeting M. Amini
+* xai setup
+* first classifier amelioration
 
 Notes:
 
