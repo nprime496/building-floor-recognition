@@ -52,7 +52,13 @@ A tester:
 	* checker les gradients (possible vanishing gradient d'après les recherches)
 	* plus de données
 
-
+questions:
+	
+	* entrainer un classifieur à partir des images des spectrogrammes ou sonogrammes, pourquoi ça marche ? 
+	* comment determiner l'erreur optimale d'un classifieur (quand est-ce que c'est satisfaisant?)
+	* données des autres niveaux disponibles?
+	* quelles sont les priorités ?
+	
 possible besoin:
 	
 	* accès aux GPU du LIG, colab très restreint
