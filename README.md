@@ -11,44 +11,55 @@
 ## Meeting:
 
 données:
+	
 	* recuperation des données à l'addresse https://aptikal.imag.fr/~amini/Data.zip
 	* creation de nouveaux samples à partir des batiments ayant deux enregistrements
 	
-Tests effectués:	
-	data : 
-		* 1 channel raw : un ou deux essais, mais reconversion vers le spectrogramme parce que SOTA.
-		* 1 channel spectrogramme 
-			prétraitement:
-				* normalisation
-				* standartisation
-				* min-max
-			augmentation des données:
-				* ralentissement
-				* acceleration
-				* chunks 
-	model: 
-		* CNN based
+Tests effectués:
 
-	difficultés:
-		* **comportement récurrent : loss qui stagne autour de 0.69-0.701**
-		* **mêmes valeurs de prédiction**
+data : 
+	
+	* 1 channel raw : un ou deux essais, mais reconversion vers le spectrogramme parce que SOTA.
+	
+	* 1 channel spectrogramme 
+		
+		prétraitement:
+			* normalisation
+			* standartisation
+			* min-max
+		augmentation des données:
+			* ralentissement
+			* acceleration
+			* chunks 
+model: 
+	
+	*  CNN based
+
+	
+difficultés:
+	
+	*  **comportement récurrent : loss qui stagne autour de 0.69-0.701**
+	***mêmes valeurs de prédiction**
 
 en cours:
+	
 	data: RGB
 	model:pretrained
 
 A tester:
+	
 	*  modèle moins large
 	* checker les gradients (possible vanishing gradient d'après les recherches)
 	* plus de données
 
 
 possible besoin:
+	
 	* accès aux GPU du LIG, colab très restreint
 
-https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-a-subclass-of-conv2d-8819675bec78
 
 Remember:
+https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-a-subclass-of-conv2d-8819675bec78
 
 * Train with more data
 * Data Augmentation
