@@ -23,8 +23,10 @@
 ## Meeting:
 
 données:
+	
 	* recuperation des données à l'addresse https://aptikal.imag.fr/~amini/Data.zip
 	* creation de nouveaux samples à partir des batiments ayant deux enregistrements
+
 
 Tests effectués:	
 	data : 
@@ -46,17 +48,27 @@ Tests effectués:
 		* **comportement récurrent : loss qui stagne autour de 0.69-0.701**
 		* **mêmes valeurs de prédiction**
 
+
 en cours:
+	
 	data: RGB
-	model:pretrained
+	model:pretrained resnet/inception/etc
 
 A tester:
+	
 	*  modèle moins large
 	* checker les gradients (possible vanishing gradient d'après les recherches)
 	* plus de données
 
-
+questions:
+	
+	* entrainer un classifieur à partir des images des spectrogrammes ou sonogrammes, pourquoi ça marche ? 
+	* comment determiner l'erreur optimale d'un classifieur (quand est-ce que c'est satisfaisant?)
+	* données des autres niveaux disponibles?
+	* quelles sont les priorités ?
+	
 possible besoin:
+	
 	* accès aux GPU du LIG, colab très restreint
 
 
@@ -68,9 +80,8 @@ no context:
 ![](best_score.jpg)
 
 
-https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-a-subclass-of-conv2d-8819675bec78
-
 Remember:
+https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-a-subclass-of-conv2d-8819675bec78
 
 * Train with more data
 * Data Augmentation
