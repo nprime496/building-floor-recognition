@@ -57,6 +57,7 @@ possible besoin:
 	
 	* accès aux GPU du LIG, colab très restreint
 
+![](best_score.png)
 
 Remember:
 https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-a-subclass-of-conv2d-8819675bec78
