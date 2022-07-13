@@ -44,7 +44,7 @@ difficultés:
 en cours:
 	
 	data: RGB
-	model:pretrained
+	model:pretrained resnet/inception/etc
 
 A tester:
 	
