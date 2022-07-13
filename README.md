@@ -39,7 +39,7 @@ model:
 difficultés:
 	
 	*  **comportement récurrent : loss qui stagne autour de 0.69-0.701**
-	***mêmes valeurs de prédiction**
+	* **mêmes valeurs de prédiction**
 
 en cours:
 	
