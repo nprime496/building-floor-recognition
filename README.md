@@ -33,7 +33,7 @@
 
 * créer une méthodologie de test rigoureuse (augmentation dev set & test set)
 
-
+----
 ## Recap:
 
 
@@ -90,7 +90,7 @@ data :
 		* aucun
 	* augmentation des données:
 		* aucune
-	modele testé: 
+	* modeles testés: 
 		* random CNN based architectures
 		* ajout batchnorm pour réduire l'effet du vanishing gradient
 		* ajout dropout pour regularisation
@@ -111,6 +111,9 @@ data :
 
 * Vu que j'ai découpé les enregistrements de 25s en enregistrements de 5s, faut-il découper le train et le test set de façon à ne pas avoir des enregistrements venant du même bâtiment dans les deux ensembles ? 
 
+* Pour le traitement des enregistrements audio bruts, l'idée est d'utiliser la séquence des amplitudes (.wav) ou l'image de la sequence ? Je pose la question parce que dans le premier cas, il serait peut-être plus interessant d'utiliser un RNN plutôt qu'un CNN d'après mes recherches.
+
+
 ### Observations:
 	
 * Augmenter le learning rate, même avec un ReduceOnPlateau pertube fortement l'entraînement, le modèle se retrouve presque toujours sur un optimum local
@@ -121,14 +124,19 @@ The best results obtained so far are summarized in the table below :
 
 | modality     | model       | accuracy | f1 | recall | precision |
 |--------------|-------------|----------|----|--------|-----------|
-| spectrogram  | SimpleNetv1 | 73.07    |    |        |           |
+| spectrogram  | SimpleNetv1* | 73.07    |    |        |           |
 | raw audio    |             |          |    |        |           |
 | MFCC         |             |          |    |        |           |
 | Late Fusion  |             |          |    |        |           |
 | Early Fusion |             |          |    |        |           |
 
 
+(*) le code simplenetv1 est disponible dans `report/SimpleNetv1.py`
 
+
+
+
+-----
 Remember:
 https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-a-subclass-of-conv2d-8819675bec78
 
