@@ -69,8 +69,7 @@ data :
 		* n_fft : 1024
 		* win_length : 1024
 		* normalisation
-		* standartisation
-		* min-max 
+		* min-max norm
 	* augmentation des données:
 		* changement de vitesse (acceleration/ralentissement) 
 		* ajout de bruits
