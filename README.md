@@ -1,8 +1,32 @@
 # building-floor-recognition
 
+## Results
+
+The best results obtained so far are summarized in the table below :
+
+| modality     | model       | accuracy | f1 | recall | precision |
+|--------------|-------------|----------|----|--------|-----------|
+| spectrogram  | SimpleNetv1 | 73.07    |    |        |           |
+| raw audio    |             |          |    |        |           |
+| MFCC         |             |          |    |        |           |
+| Late Fusion  |             |          |    |        |           |
+| Early Fusion |             |          |    |        |           |
+
+
 ## TODO
 
-* Commencer learning rate plus haut
+* sample rate may be important for spectrogram calculation, check it! ✅
+
+* stop mini batching .... 
+
+* add dropout ✅
+
+* automate hyperparameter search (optuna,etc)
+
+
+* Commencer learning rate plus haut ✅ 
+	
+	* no improvement, l'entrainement est plus difficile 
 
 * Checker [la norme des poids](https://discuss.pytorch.org/t/how-to-check-for-vanishing-exploding-gradients/9019)
 
