@@ -1,19 +1,9 @@
 # building-floor-recognition
 
-## Results
-
-The best results obtained so far are summarized in the table below :
-
-| modality     | model       | accuracy | f1 | recall | precision |
-|--------------|-------------|----------|----|--------|-----------|
-| spectrogram  | SimpleNetv1 | 73.07    |    |        |           |
-| raw audio    |             |          |    |        |           |
-| MFCC         |             |          |    |        |           |
-| Late Fusion  |             |          |    |        |           |
-| Early Fusion |             |          |    |        |           |
-
 
 ## TODO
+
+* Essayer de sampler en prenant en compte le batiment d'origine du son
 
 * sample rate may be important for spectrogram calculation, check it! ✅
 
@@ -28,10 +18,10 @@ The best results obtained so far are summarized in the table below :
 	
 	* no improvement, l'entrainement est plus difficile 
 
-* Checker [la norme des poids](https://discuss.pytorch.org/t/how-to-check-for-vanishing-exploding-gradients/9019)
+* Checker [la norme des poids](https://discuss.pytorch.org/t/how-to-check-for-vanishing-exploding-gradients/9019) ✅
 
 
-* Bayes dépend de la distribution (proportion des classes)
+* Erreur de Bayes dépend de la distribution (proportion des classes)
 
 * Essayer plusieurs classifieurs 
 
@@ -44,64 +34,99 @@ The best results obtained so far are summarized in the table below :
 * créer une méthodologie de test rigoureuse (augmentation dev set & test set)
 
 
-## Meeting:
+## Recap:
 
-données:
+
+Le code est disponible dans le fichier `code/audio_classification.ipynb`
+
+Ci-dessous, un résumé sommaire de ce qui a été fait et les résultats obtenus.
+
+### Traitement des  données:
 	
-	* recuperation des données à l'addresse https://aptikal.imag.fr/~amini/Data.zip
-	* creation de nouveaux samples à partir des batiments ayant deux enregistrements
+* recuperation des données à l'addresse [APTIKAL](https://aptikal.imag.fr/~amini/Data.zip)
+
+* creation de nouveaux samples à partir des batiments ayant deux enregistrements
+* découpage des samples de 25s en 5 samples de 5s chacun, on obtient ainsi 130 enregistrements.
+
+| etages     | R+1 | R+5 | 
+|--------------|-----|-----|
+| nb. samples  | 70  | 60  | 
 
 
-Tests effectués:	
-	data : 
-		* 1 channel raw : un ou deux essais, mais reconversion vers le spectrogramme parce que SOTA.
-		* 1 channel spectrogramme 
-			prétraitement:
-				* normalisation
-				* standartisation
-				* min-max
-			augmentation des données:
-				* ralentissement
-				* acceleration
-				* chunks 
-	model: 
-		* CNN based
 
-	difficultés:
-		* hypersensiblité au training loss
-		* **comportement récurrent : loss qui stagne autour de 0.69-0.701**
-		* **mêmes valeurs de prédiction**
+* nouvelles données disponibles à l'adresse : https://huggingface.co/datasets/nprime496/building_floor_classification/tree/main
 
 
-en cours:
+### Tests effectués:
+
+data : 
 	
-	data: RGB
-	model:pretrained resnet/inception/etc
-
-A tester:
+* modalité raw (données sous forme de .wav):
+	*  quelques essais non fructueux en début de projet, mais reconversion vers le spectrogramme parce que la méthode semblait être plus commune et mieux documentée .
 	
-	*  modèle moins large
-	* checker les gradients (possible vanishing gradient d'après les recherches)
-	* plus de données
+* spectrogramme 25 s (données originales)
+	* prétraitement:
+		* n_fft : 1024
+		* win_length : 1024
+		* normalisation
+		* standartisation
+		* min-max 
+	* augmentation des données:
+		* changement de vitesse (acceleration/ralentissement) 
+		* ajout de bruits
+	* modeles testés: 
+		* random CNN based architecture
+	* **résumé**:
+	**La plupart des tests évoqués ci-dessus ont été faits avec les échantillons de 25 secondes et n'ont pas produits de résultats vraiment satisfaisants. Une cause probable étant le  nombre d'enregistrements restreint du jeu de données et un problème non résolu de vanishing gradient. Aussi, la faible taille du jeu de données ne permet pas de donner une mesure fiable de la performance des modèles entrainés.**
 
-questions:
+	* difficultés:
+		* hypersensiblité au learning rate
+		* comportement récurrent : loss qui stagne autour de 0.69-0.701 et **mêmes valeurs de prédiction** (vanishing gradient)
+
+* spectrogramme 5 s (entrainement avec des spectrogrammes d'enregistrements de 5s)
+	* prétraitement:
+		* n_fft : 1024
+		* win_length : 1024
+		* aucun
+	* augmentation des données:
+		* aucune
+	modele testé: 
+		* random CNN based architectures
+		* ajout batchnorm pour réduire l'effet du vanishing gradient
+		* ajout dropout pour regularisation
+	* **résumé**:
+	**Bien que les modèles n'aient fondamentalement pas changé (mis à part l'ajout de batchnorm et dropout), on observe une nette amélioration des performances. En effet le meilleur score obtenu jusqu'à présent est 73.07% d'accuracy.**
+
+	* difficultés:
+		* malgré l'augmentation de la performance, le modèle semble toujours avoir un grand bias, il serait interessant de tester d'autres architectures pour voir s'il diminue.
+		* Meilleure selection du jeu de test ?
+
+
+### En cours:
+
+* mise en place du pipeline et test pour les données raw (données sous forme de .wav)
+* mise en place du pipeline et test pour les données MFCC 
+
+### questions:
+
+* Vu que j'ai découpé les enregistrements de 25s en enregistrements de 5s, faut-il découper le train et le test set de façon à ne pas avoir des enregistrements venant du même bâtiment dans les deux ensembles ? 
+
+### Observations:
 	
-	* entrainer un classifieur à partir des images des spectrogrammes ou sonogrammes, pourquoi ça marche ? 
-	* comment determiner l'erreur optimale d'un classifieur (quand est-ce que c'est satisfaisant?)
-	* données des autres niveaux disponibles?
-	* quelles sont les priorités ?
-	
-possible besoin:
-	
-	* accès aux GPU du LIG, colab très restreint
+* Augmenter le learning rate, même avec un ReduceOnPlateau pertube fortement l'entraînement, le modèle se retrouve presque toujours sur un optimum local
 
+## Results
 
-no context:
-- chunks
-- no augmentation
-- learning rate : 4e-3 (reduce on plateau ,patience 10, factor 0.5)
+The best results obtained so far are summarized in the table below :
 
-![](best_score.jpg)
+| modality     | model       | accuracy | f1 | recall | precision |
+|--------------|-------------|----------|----|--------|-----------|
+| spectrogram  | SimpleNetv1 | 73.07    |    |        |           |
+| raw audio    |             |          |    |        |           |
+| MFCC         |             |          |    |        |           |
+| Late Fusion  |             |          |    |        |           |
+| Early Fusion |             |          |    |        |           |
+
 
 
 Remember:
@@ -117,3 +142,6 @@ https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-
 * emsembling
 * early stopping
 * adding dropout layers
+
+
+✅ ❌
