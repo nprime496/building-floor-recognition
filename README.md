@@ -3,6 +3,8 @@
 
 ## TODO
 
+* https://stats.stackexchange.com/questions/559009/why-convert-spectrogram-to-rgb-for-machine-learning
+
 * Essayer de sampler en prenant en compte le batiment d'origine du son
 
 * sample rate may be important for spectrogram calculation, check it! ✅
