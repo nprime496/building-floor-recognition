@@ -1,9 +1,19 @@
 # building-floor-recognition
 
+![](report/confusion.png)
+## TODO & NOTES
 
-## TODO
+* spec semble être meilleur que mfcc clairement, plus de runs ?
+
+* pourquoi simplenet overfit plus que notsimplenet ?
+
+* Separer des batiments pour l'entrainement et la validation
+
+* faire un prédicteur ensembliste qui prédit en utilisant un aggregateur de predictions sur les chunks
 
 * https://stats.stackexchange.com/questions/559009/why-convert-spectrogram-to-rgb-for-machine-learning
+
+* https://stats.stackexchange.com/questions/258166/good-accuracy-despite-high-loss-value
 
 * Essayer de sampler en prenant en compte le batiment d'origine du son
 
@@ -27,7 +37,7 @@
 
 * Essayer plusieurs classifieurs 
 
-* Preprocessing une seule fois, stocker
+* Preprocessing une seule fois, stocker ✅
 
 * Tester plusieurs modèles, noter dans un tableau les caractéristiques, taille embedding, couche cachée.
 
@@ -151,6 +161,3 @@ https://towardsdatascience.com/conv1d-and-conv2d-did-you-realize-that-conv1d-is-
 * emsembling
 * early stopping
 * adding dropout layers
-
-
-✅ ❌
