@@ -3,6 +3,10 @@
 ![](report/confusion.png)
 ## TODO & NOTES
 
+* models used not big enough, increase size and complexity
+
+* GETALP pour conseils
+
 * spec semble être meilleur que mfcc clairement, plus de runs ?
 
 * pourquoi simplenet overfit plus que notsimplenet ?
@@ -131,16 +135,21 @@ data :
 
 ## Results
 
-The best results obtained so far are summarized in the table below :
+The last results obtained so far are summarized in the table below :
 
-| modality     | model       | accuracy | f1 | recall | precision |
-|--------------|-------------|----------|----|--------|-----------|
-| spectrogram  | SimpleNetv1* | 73.07    |    |        |           |
-| raw audio    |             |          |    |        |           |
-| MFCC         |             |          |    |        |           |
-| Late Fusion  |             |          |    |        |           |
-| Early Fusion |             |          |    |        |           |
-
+|                 | modality  | f1-R+1 | f1-R+3 | f1-R+5 | accuracy | f1 macro | f1 avg |
+|-----------------|-----------|--------|--------|--------|----------|----------|--------|
+| simplenet       | mfcc      | 0.44   | 0.44   | 0.12   | 0.39     | 0.33     | 0.36   |
+| simplesimplenet | mfcc      | 0.09   | 0.51   | 0.00   | 0.35     | 0.20     | 0.23   |
+| notsimplenet    | mfcc      | 0.00   | 0.54   | 0.00   | 0.37     | 0.18     | 0.21   |
+| bigone          | spec      | 0.32   | 0.09   | 0.52   | 0.37     | 0.31     | 0.28   |
+| simplenet       | spec      | 0.23   | 0.44   | 0.38   | 0.37     | 0.35     | 0.35   |
+| simplesimplenet | spec      | 0.16   | 0.00   | 0.42   | 0.28     | 0.19     | 0.17   |
+| notsimplenet    | spec      | 0.53   | 0.09   | 0.50   | 0.43     | 0.37     | 0.35   |
+| bigone          | spec_norm | 0.47   | 0.33   | 0.55   | 0.46     | 0.45     | 0.44   |
+| simplenet       | spec_norm | 0.47   | 0.45   | 0.53   | 0.48     | 0.48     | 0.48   |
+| notsimplenet    | spec_norm | 0.53   | 0.46   | 0.00   | 0.43     | 0.33     | 0.37   |
+| simplesimplenet | spec_norm | 0.55   | 0.42   | 0.59   | 0.52     | 0.52     | 0.51   |
 
 (*) le code simplenetv1 est disponible dans `report/SimpleNetv1.py`
 
