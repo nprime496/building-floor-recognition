@@ -1,59 +1,13 @@
 # building-floor-recognition
 
-![](report/confusion.png)
-## TODO & NOTES
 
-* models used not big enough, increase size and complexity
-
-* GETALP pour conseils
-
-* spec semble être meilleur que mfcc clairement, plus de runs ?
-
-* pourquoi simplenet overfit plus que notsimplenet ?
-
-* Separer des batiments pour l'entrainement et la validation
-
-* faire un prédicteur ensembliste qui prédit en utilisant un aggregateur de predictions sur les chunks
-
-* https://stats.stackexchange.com/questions/559009/why-convert-spectrogram-to-rgb-for-machine-learning
-
-* https://stats.stackexchange.com/questions/258166/good-accuracy-despite-high-loss-value
-
-* Essayer de sampler en prenant en compte le batiment d'origine du son
-
-* sample rate may be important for spectrogram calculation, check it! ✅
-
-* stop mini batching .... 
-
-* add dropout ✅
-
-* automate hyperparameter search (optuna,etc)
-
-
-* Commencer learning rate plus haut ✅ 
-	
-	* no improvement, l'entrainement est plus difficile 
-
-* Checker [la norme des poids](https://discuss.pytorch.org/t/how-to-check-for-vanishing-exploding-gradients/9019) ✅
-
-
-* Erreur de Bayes dépend de la distribution (proportion des classes)
-
-* Essayer plusieurs classifieurs 
-
-* Preprocessing une seule fois, stocker ✅
-
-* Tester plusieurs modèles, noter dans un tableau les caractéristiques, taille embedding, couche cachée.
-
-* Une section par modèle, tester différents classifieurs + random.
-
-* créer une méthodologie de test rigoureuse (augmentation dev set & test set)
+# TODO & NOTES
 
 ----
 ## Recap:
 
 
-Le code est disponible dans le fichier `code/audio_classification.ipynb`
+Le code est disponible dans le dossier `code/*.ipynb`
 
 Ci-dessous, un résumé sommaire de ce qui a été fait et les résultats obtenus.
 
@@ -62,97 +16,110 @@ Ci-dessous, un résumé sommaire de ce qui a été fait et les résultats obtenu
 * recuperation des données à l'addresse [APTIKAL](https://aptikal.imag.fr/~amini/Data.zip)
 
 * creation de nouveaux samples à partir des batiments ayant deux enregistrements
-* découpage des samples de 25s en 5 samples de 5s chacun, on obtient ainsi 130 enregistrements.
+* découpage des samples de 25s en 5 samples de 5s chacun, on obtient ainsi 186 enregistrements.
 
-| etages     | R+1 | R+5 | 
-|--------------|-----|-----|
-| nb. samples  | 70  | 60  | 
+| etages     | R+1 | R+3 | R+5 | 
+|--------------|-----|-----|----|
+| nb. samples  | 68  | 61  | 57|
 
+* découpage des samples de 25s en 2 samples de 10s chacun, on obtient ainsi 18 enregistrements.
 
-
-* nouvelles données disponibles à l'adresse : https://huggingface.co/datasets/nprime496/building_floor_classification/tree/main
-
-
-### Tests effectués:
-
-data : 
-	
-* modalité raw (données sous forme de .wav):
-	*  quelques essais non fructueux en début de projet, mais reconversion vers le spectrogramme parce que la méthode semblait être plus commune et mieux documentée .
-	
-* spectrogramme 25 s (données originales)
-	* prétraitement:
-		* n_fft : 1024
-		* win_length : 1024
-		* normalisation
-		* min-max norm
-	* augmentation des données:
-		* changement de vitesse (acceleration/ralentissement) 
-		* ajout de bruits
-	* modeles testés: 
-		* random CNN based architecture
-	* **résumé**:
-	**La plupart des tests évoqués ci-dessus ont été faits avec les échantillons de 25 secondes et n'ont pas produits de résultats vraiment satisfaisants. Une cause probable étant le  nombre d'enregistrements restreint du jeu de données et un problème non résolu de vanishing gradient. Aussi, la faible taille du jeu de données ne permet pas de donner une mesure fiable de la performance des modèles entrainés.**
-
-	* difficultés:
-		* hypersensiblité au learning rate
-		* comportement récurrent : loss qui stagne autour de 0.69-0.701 et **mêmes valeurs de prédiction** (vanishing gradient)
-
-* spectrogramme 5 s (entrainement avec des spectrogrammes d'enregistrements de 5s)
-	* prétraitement:
-		* n_fft : 1024
-		* win_length : 1024
-		* aucun
-	* augmentation des données:
-		* aucune
-	* modeles testés: 
-		* random CNN based architectures
-		* ajout batchnorm pour réduire l'effet du vanishing gradient
-		* ajout dropout pour regularisation
-	* **résumé**:
-	**Bien que les modèles n'aient fondamentalement pas changé (mis à part l'ajout de batchnorm et dropout), on observe une nette amélioration des performances. En effet le meilleur score obtenu jusqu'à présent est 73.07% d'accuracy.**
-
-	* difficultés:
-		* malgré l'augmentation de la performance, le modèle semble toujours avoir un grand bias, il serait interessant de tester d'autres architectures pour voir s'il diminue.
-		* Meilleure selection du jeu de test ?
+| etages     | R+1 | R+3 | R+5 | 
+|--------------|-----|-----|----|
+| nb. samples  | -  | -  | -|
 
 
-### En cours:
-
-* mise en place du pipeline et test pour les données raw (données sous forme de .wav)
-* mise en place du pipeline et test pour les données MFCC 
-
-### questions:
-
-* Vu que j'ai découpé les enregistrements de 25s en enregistrements de 5s, faut-il découper le train et le test set de façon à ne pas avoir des enregistrements venant du même bâtiment dans les deux ensembles ? 
-
-* Pour le traitement des enregistrements audio bruts, l'idée est d'utiliser la séquence des amplitudes (.wav) ou l'image de la sequence ? Je pose la question parce que dans le premier cas, il serait peut-être plus interessant d'utiliser un RNN plutôt qu'un CNN d'après mes recherches.
+* Les données prétraîtées disponibles [ici](https://huggingface.co/datasets/nprime496/building_floor_classification/tree/main)
 
 
-### Observations:
-	
-* Augmenter le learning rate, même avec un ReduceOnPlateau pertube fortement l'entraînement, le modèle se retrouve presque toujours sur un optimum local
+## Tests effectués:
 
-## Results
+### Données Expert :
+La configuration utilisée pour obtenir les Spectrogrammes est la suivante :
+* n_fft : 1024
+* win_length : 1024
 
-The last results obtained so far are summarized in the table below :
+Celle utilisée pour les MFCC est la suivante:
+* n_fft:1024
+* n_mfcc: 1024
+* n_mels: 1024
+* sample_rate:8820
 
-|                 | modality  | f1-R+1 | f1-R+3 | f1-R+5 | accuracy | f1 macro | f1 avg |
-|-----------------|-----------|--------|--------|--------|----------|----------|--------|
-| simplenet       | mfcc      | 0.44   | 0.44   | 0.12   | 0.39     | 0.33     | 0.36   |
-| simplesimplenet | mfcc      | 0.09   | 0.51   | 0.00   | 0.35     | 0.20     | 0.23   |
-| notsimplenet    | mfcc      | 0.00   | 0.54   | 0.00   | 0.37     | 0.18     | 0.21   |
-| bigone          | spec      | 0.32   | 0.09   | 0.52   | 0.37     | 0.31     | 0.28   |
-| simplenet       | spec      | 0.23   | 0.44   | 0.38   | 0.37     | 0.35     | 0.35   |
-| simplesimplenet | spec      | 0.16   | 0.00   | 0.42   | 0.28     | 0.19     | 0.17   |
-| notsimplenet    | spec      | 0.53   | 0.09   | 0.50   | 0.43     | 0.37     | 0.35   |
-| bigone          | spec_norm | 0.47   | 0.33   | 0.55   | 0.46     | 0.45     | 0.44   |
-| simplenet       | spec_norm | 0.47   | 0.45   | 0.53   | 0.48     | 0.48     | 0.48   |
-| notsimplenet    | spec_norm | 0.53   | 0.46   | 0.00   | 0.43     | 0.33     | 0.37   |
-| simplesimplenet | spec_norm | 0.55   | 0.42   | 0.59   | 0.52     | 0.52     | 0.51   |
+Pour rappel, les resultats obtenus avec les chunks de 5s sur les 03 étages avec la modalité spectrogramme:
 
-(*) le code simplenetv1 est disponible dans `report/SimpleNetv1.py`
+|                 | accuracy | f1-score avg | f1 weighted |
+|-----------------|----------|--------------|-------------|
+| simplesimplenet | 0.44     | 0.39         | 0.37        |
+| simplenet       | 0.64     | 0.63         | 0.64        |
+| notsimplenet    | 0.67     | 0.67         | 0.68        |
+| resnet          |    -    |      -       |     -        |
+| bigone          | 0.54     | 0.48         | 0.48        |
 
+Les resultats obtenus sont les suivants avec les chunks de 5s sur les 03 étages avec la modalité MFCC:
+
+|                 | accuracy | f1-score avg | f1 weighted |
+|-----------------|----------|--------------|-------------|
+| simplesimplenet | 0.33     | 0.24         | 0.26        |
+| simplenet       | 0.36     | 0.31         | 0.33        |
+| notsimplenet    | 046      | 0.42         | 0.46        |
+| resnet          |   -       |     -         |     -        |
+| bigone          | 0.49     | 0.37         | 0.42        |
+
+Les résultats obtenus en faisant un late fusion avec les modalités précédentes sont :
+
+**A COMPLETER (pas encore fait car il faut faire une selection des meilleurs modèles pour chaque modalité)**
+
+En utlisant le dataset des chunks de 5s et 10s, nous avons également testé la classification en utilisant les méthodes suivantes : RandomForest, SVM, KNN (avec correlation comme métrique), MLP, Random sans résultat de performance notable. 
+
+Les résultats et le code sont disponibles [ici](https://github.com/nprime496/building-floor-recognition/blob/main/code/audio_classification_alternatives.ipynb)
+
+
+
+**résumé**:
+
+**Bien qu'on constate une performance qui semble se démarquer d'une classification aléatoire, le manque de données rend ces résulats très incertains. En effet, la performance des modèles peut varier entre les differents essais. Les résultats obtenus avec finetuning sur Resnet (avec la modalité Spectrogramme) n'ont pas été mentionné car trop variants, aucune sorte de correlation entre les essais ne semblait émerger.**
+
+### Augmentation des données
+
+Face à cette difficulté, nous nous sommes tournés vers une approche d'augmentation des données. En effet, les enregistrements originaux étant disponibles, il serait interessant de les utliser. C'est ainsi que nous avons produit un nouveau dataset contenant des chunks de 10s provenant des enregistrements originaux. Cependant, les enregistrements de l'étage 3 ne sont pas disponibles. Nous avons donc fait des tests dans un cas de classification binaire sur les différentes modalités.
+
+Nous avons ajouté un nouveaau modèle pré-entrainé dans notre ensemble de modèles à tester : [Resnet34](https://huggingface.co/docs/transformers/model_doc/resnet).
+
+Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s originaux sont:
+
+|                 | accuracy | f1-score avg | f1 weighted |
+|-----------------|----------|--------------|-------------|
+| simplesimplenet | 0.71     | 0.70         | 0.70        |
+| simplenet       | 0.79     | 0.79         | 0.79        |
+| notsimplenet    | 0.79     | 0.79         | 0.79        |
+| resnet          |          |              |             |
+| bigone          | 0.79     | 0.79         | 0.79        |
+
+Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s augmentés sont:
+
+|                 | accuracy | f1-score avg | f1 weighted |
+|-----------------|----------|--------------|-------------|
+| simplesimplenet | 0.44     | 0.35         | 0.39        |
+| simplenet       | 0.53     | 0.38         | 0.43        |
+| notsimplenet    | 0.35     | 0.31         | 0.34        |
+| resnet          |    0.38      |        0.44      |     0.44        |
+| bigone          | 0.50     | 0.35         | 0.41        |
+
+Les resultats obtenus avec la modalité spectrogramme avec les chunks de 10s augmentés sont:
+
+
+
+|                 | accuracy | f1-score avg | f1 weighted |
+|-----------------|----------|--------------|-------------|
+| simplesimplenet | 0.65     | 0.64         | 0.64        |
+| simplenet       | 0.50     | 0.44         | 0.40        |
+| notsimplenet    | 0.61     | 0.56         | 0.58        |
+| resnet          |   0.66       |  0.66            |   0.66          |
+| bigone          | 0.52     | 0.48         | 0.46        |
+
+Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https://github.com/nprime496/building-floor-recognition/blob/main/code/audio_classification_fine_tuning.ipynb)
+
+**On constate une baisse nette de performance avec l'utilisation des données augmentées. Ce qui est assez surprenant. Il semble qu'ajouter des données semble ajouter plus de confusion dans le modèle.** 
 
 
 
