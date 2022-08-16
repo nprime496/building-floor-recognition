@@ -122,6 +122,27 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 **On constate une baisse nette de performance avec l'utilisation des données augmentées. Ce qui est assez surprenant. Il semble qu'ajouter des données semble ajouter plus de confusion dans le modèle.** 
 
 
+## Early fusion
+
+## Resultats obtenus avec la modalité spec
+
+|index|Model|Accuracy|AUC|Recall|Prec\.|F1|
+|---|---|---|---|---|---|---|
+|et|Extra Trees Classifier|0\.7317|0\.8734|0\.7429|0\.7969|0\.7191|
+|rf|Random Forest Classifier|0\.7073|0\.8038|0\.7151|0\.7354|0\.6961|
+|lightgbm|Light Gradient Boosting Machine|0\.6341|0\.8107|0\.6429|0\.6433|0\.6093|
+|nb|Naive Bayes|0\.6098|0\.6743|0\.6151|0\.5945|0\.5854|
+|gbc|Gradient Boosting Classifier|0\.5854|0\.8023|0\.5857|0\.5702|0\.5714|
+|dt|Decision Tree Classifier|0\.5366|0\.6464|0\.5381|0\.565|0\.5333|
+|ada|Ada Boost Classifier|0\.5122|0\.6968|0\.5111|0\.5221|0\.5141|
+|lda|Linear Discriminant Analysis|0\.5122|0\.6069|0\.5048|0\.519|0\.5057|
+|knn|K Neighbors Classifier|0\.439|0\.642|0\.4238|0\.4366|0\.4184|
+|ridge|Ridge Classifier|0\.4146|0\.0|0\.4119|0\.4242|0\.4086|
+|svm|SVM - Linear Kernel|0\.3902|0\.0|0\.3905|0\.3838|0\.3825|
+|lr|Logistic Regression|0\.3659|0\.5614|0\.3635|0\.369|0\.3661|
+|dummy|Dummy Classifier|0\.2927|0\.0|0\.3333|0\.0857|0\.1325|
+|qda|Quadratic Discriminant Analysis|0\.2439|0\.447|0\.2667|0\.1539|0\.1728|
+
 
 -----
 Remember:
