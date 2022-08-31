@@ -104,7 +104,7 @@ Nous avons ajouté un nouveaau modèle pré-entrainé dans notre ensemble de mod
 
 Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s originaux sont:
 
-|                 | accuracy | f1-score avg | f1 weighted |
+|       model          | accuracy | f1-score avg | f1 weighted |
 |-----------------|----------|--------------|-------------|
 | simplesimplenet | 0.71     | 0.70         | 0.70        |
 | simplenet       | 0.79     | 0.79         | 0.79        |
@@ -114,7 +114,7 @@ Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s orig
 
 Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s augmentés sont:
 
-|                 | accuracy | f1-score avg | f1 weighted |
+|        model         | accuracy | f1-score avg | f1 weighted |
 |-----------------|----------|--------------|-------------|
 | simplesimplenet | 0.44     | 0.35         | 0.39        |
 | simplenet       | 0.53     | 0.38         | 0.43        |
@@ -126,7 +126,7 @@ Les resultats obtenus avec la modalité spectrogramme avec les chunks de 10s aug
 
 
 
-|                 | accuracy | f1-score avg | f1 weighted |
+|       model          | accuracy | f1-score avg | f1 weighted |
 |-----------------|----------|--------------|-------------|
 | simplesimplenet | 0.65     | 0.64         | 0.64        |
 | simplenet       | 0.50     | 0.44         | 0.40        |
@@ -140,14 +140,18 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 
 ### Spectrogramme
 
-|index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|---|---|---|---|---|---|
+|resnet|spec|0\.42|97\.21|1\.13|47\.36|
+
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
 |bigone|spec|2\.06|53\.78|1\.39|51\.28|
 |notsimplenet|spec|0\.89|59\.09|2\.53|25\.64|
 |simplenet|spec|0\.74|71\.97|1\.18|38\.46|
 |simplesimplenet|spec|1\.26|42\.42|1\.33|41\.02|
 
-|index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
 |bigone|spec|1\.40|55\.30|1\.07|43\.59|
 |notsimplenet|spec|0\.96|57\.57|0\.91|38\.46|
@@ -156,7 +160,7 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 
 
 
-|index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
 |bigone|mfcc|0\.87|61\.36|0\.95|64\.10|
 |notsimplenetmfcc|mfcc|1\.03|46\.97|1\.13|33\.33|
@@ -165,14 +169,19 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 
 ### MFCC
 
-|index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|bigone|mfcc|0\.87|59\.09|0\.66|71\.79|mfcc|0\.84|58\.33|1\.02|53\.84|
+|resnet|mfcc|0\.82|85\.84|0\.97|57\.89|
+
+
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|---|---|---|---|---|---|
+|bigone|mfcc|0\.87|59\.09|0\.66|71\.79|
 |notsimplenetmfcc|mfcc|0\.84|58\.33|1\.03|53\.84|
 |simplenetmfcc|mfcc|0\.733|71\.97|0\.99|51\.28|
 |simplesimplenetmfcc|mfcc|1\.00|46\.21|1\.19|35\.89|
 
-|index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
 |bigone|mfcc|0\.86|64\.39|1\.06|64\.10|
 |notsimplenetmfcc|mfcc|0\.73|68\.18|0\.89|58\.97|
@@ -180,7 +189,7 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 |simplesimplenetmfcc|mfcc|1\.26|37\.12|1\.68|38\.46|
 
 
-|index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
+|model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
 |bigone|mfcc|0\.88|65\.91|0\.83|64\.10|
 |notsimplenetmfcc|mfcc|0\.91|58\.33|1\.28|35\.89|
@@ -199,7 +208,7 @@ Les données utilisées pour entrainer les classifieurs proviennent des chunks d
 
 ### Resultats obtenus avec la modalité spec
 
-|index|Model|Accuracy|AUC|Recall|Prec\.|F1|
+|model|Model|Accuracy|AUC|Recall|Prec\.|F1|
 |---|---|---|---|---|---|---|
 |et|Extra Trees Classifier|0\.7317|0\.8734|0\.7429|0\.7969|0\.7191|
 |rf|Random Forest Classifier|0\.7073|0\.8038|0\.7151|0\.7354|0\.6961|
