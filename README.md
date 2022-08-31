@@ -11,30 +11,42 @@ Le code est disponible dans le dossier `code/*.ipynb`
 
 Ci-dessous, un résumé sommaire de ce qui a été fait et les résultats obtenus.
 
-### Traitement des  données:
+### Recuperation des  données:
 	
 * recuperation des données à l'addresse [APTIKAL](https://aptikal.imag.fr/~amini/Data.zip)
+* Les données disponibles sont :
+    * des échantillons sonores
+    * des enregistements de 3min pour les étages 1 et 5
+    * des échantillons sonores de 25s selectionnés par un expert pour les étage 1,3 et 5.
+    
+<center>
 
-* creation de nouveaux samples à partir des batiments ayant deux enregistrements
-* découpage des samples de 25s en 5 samples de 5s chacun, on obtient ainsi 186 enregistrements.
+| etages     | R+1 | R+3 | R+5 | 
+|--------------|-----|-----|----|
+| nb. samples  | 11  | 12  | 15|
+
+</center>
+
+### Traitement des  données:
+* Nous avons créé de nouveaux samples à partir des batiments ayant deux enregistrements
+* découpage des samples de 25s en 5 samples de 5s chacun, on obtient ainsi 186 enregistrements, on obtient:
+
+<center>
 
 | etages     | R+1 | R+3 | R+5 | 
 |--------------|-----|-----|----|
 | nb. samples  | 68  | 61  | 57|
 
-* découpage des samples de 25s en 2 samples de 10s chacun, on obtient ainsi 18 enregistrements.
+</center>
 
-| etages     | R+1 | R+3 | R+5 | 
-|--------------|-----|-----|----|
-| nb. samples  | -  | -  | -|
-
+* Le découpage des samples de 30ss en 2 samples de 10s chacun a été envisagé mais le gain en données est trop faible pour que ce soit utilisé.
 
 * Les données prétraîtées disponibles [ici](https://huggingface.co/datasets/nprime496/building_floor_classification/tree/main)
-
+-----
 
 ## Tests effectués:
 
-### Données Expert :
+### Setup 
 La configuration utilisée pour obtenir les Spectrogrammes est la suivante :
 * n_fft : 1024
 * win_length : 1024
@@ -46,6 +58,9 @@ Celle utilisée pour les MFCC est la suivante:
 * sample_rate:8820
 
 
+
+### Données Expert (échantillons de 25s) :
+
 Pour rappel, les resultats obtenus avec les chunks de 5s sur les 03 étages avec la modalité spectrogramme:
 
 |                 | accuracy | f1-score avg | f1 weighted |
@@ -53,7 +68,7 @@ Pour rappel, les resultats obtenus avec les chunks de 5s sur les 03 étages avec
 | simplesimplenet | 0.44     | 0.39         | 0.37        |
 | simplenet       | 0.64     | 0.63         | 0.64        |
 | notsimplenet    | 0.67     | 0.67         | 0.68        |
-| resnet          |    -    |      -       |     -        |
+| resnet (fine-tuning)         |    0.70    |      -       |     -        |
 | bigone          | 0.54     | 0.48         | 0.48        |
 
 Les resultats obtenus sont les suivants avec les chunks de 5s sur les 03 étages avec la modalité MFCC:
@@ -63,7 +78,7 @@ Les resultats obtenus sont les suivants avec les chunks de 5s sur les 03 étages
 | simplesimplenet | 0.33     | 0.24         | 0.26        |
 | simplenet       | 0.36     | 0.31         | 0.33        |
 | notsimplenet    | 046      | 0.42         | 0.46        |
-| resnet          |   -       |     -         |     -        |
+| resnet (fine-tuning)       |   0.63       |     -         |     -        |
 | bigone          | 0.49     | 0.37         | 0.42        |
 
 Les résultats obtenus en faisant un late fusion avec les modalités précédentes sont :
@@ -82,7 +97,8 @@ Les résultats et le code sont disponibles [ici](https://github.com/nprime496/bu
 
 ### Augmentation des données
 
-Face à cette difficulté, nous nous sommes tournés vers une approche d'augmentation des données. En effet, les enregistrements originaux étant disponibles, il serait interessant de les utliser. C'est ainsi que nous avons produit un nouveau dataset contenant des chunks de 10s provenant des enregistrements originaux. Cependant, les enregistrements de l'étage 3 ne sont pas disponibles. Nous avons donc fait des tests dans un cas de **classification binaire** sur les différentes modalités.
+
+Face à cette difficulté posée par le manque de donnnées, nous avons décidé de faire une augmentation. En effet, les enregistrements originaux étant disponibles, il serait interessant de les utliser. C'est ainsi que nous avons produit un nouveau dataset contenant des chunks de 10s provenant des enregistrements originaux. Cependant, les enregistrements de l'étage 3 ne sont pas disponibles. Nous avons donc fait des tests dans un cas de **classification binaire** sur les différentes modalités.
 
 Nous avons ajouté un nouveaau modèle pré-entrainé dans notre ensemble de modèles à tester : [Resnet34](https://huggingface.co/docs/transformers/model_doc/resnet).
 
@@ -93,7 +109,7 @@ Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s orig
 | simplesimplenet | 0.71     | 0.70         | 0.70        |
 | simplenet       | 0.79     | 0.79         | 0.79        |
 | notsimplenet    | 0.79     | 0.79         | 0.79        |
-| resnet          |          |              |             |
+| resnet          | 0.73         |              |             |
 | bigone          | 0.79     | 0.79         | 0.79        |
 
 Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s augmentés sont:
@@ -126,50 +142,50 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 
 |index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|bigone|spec|2\.067902508903952|53\.78787878787878|1\.3941661834716796|51\.28205128205128|
-|simplenet|spec|0\.7475207272697898|71\.96969696969697|1\.1897236824035644|38\.46153846153847|
-|notsimplenet|spec|0\.8936526354621438|59\.09090909090909|2\.5394668579101562|25\.64102564102564|
-|simplesimplenet|spec|1\.2620386235854204|42\.42424242424242|1\.3371530532836915|41\.02564102564102|
+|bigone|spec|2\.06|53\.78|1\.39|51\.28|
+|notsimplenet|spec|0\.89|59\.09|2\.53|25\.64|
+|simplenet|spec|0\.74|71\.97|1\.18|38\.46|
+|simplesimplenet|spec|1\.26|42\.42|1\.33|41\.02|
 
 |index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|bigone|spec|1\.4041337405934053|55\.3030303030303|1\.0686330795288086|43\.58974358974359|
-|simplenet|spec|0\.8865025464226218|58\.333333333333336|0\.9042177200317383|38\.46153846153847|
-|notsimplenet|spec|0\.9641312991871553|57\.57575757575758|0\.914417839050293|38\.46153846153847|
-|simplesimplenet|spec|0\.6542682086720186|77\.27272727272727|1\.5335296630859374|48\.717948717948715|
+|bigone|spec|1\.40|55\.30|1\.07|43\.59|
+|notsimplenet|spec|0\.96|57\.57|0\.91|38\.46|
+|simplenet|spec|0\.88|58\.33|0\.90|38\.46|
+|simplesimplenet|spec|0\.65|77\.27|1\.53|48\.71|
 
 
 
 |index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|bigone|mfcc|0\.8718697604011086|61\.36363636363637|0\.9470756530761719|64\.1025641025641|
-|notsimplenetmfcc|mfcc|1\.0375050937428194|46\.96969696969697|1\.132332992553711|33\.33333333333333|
-|simplenetmfcc|mfcc|0\.726630266974954|72\.72727272727273|1\.0803455352783202|46\.15384615384615|
-|simplesimplenetmfcc|mfcc|0\.9430997511919808|55\.3030303030303|1\.19197998046875|33\.33333333333333|
+|bigone|mfcc|0\.87|61\.36|0\.95|64\.10|
+|notsimplenetmfcc|mfcc|1\.03|46\.97|1\.13|33\.33|
+|simplenetmfcc|mfcc|0\.72|72\.72|1\.08|46\.15|
+|simplesimplenetmfcc|mfcc|0\.94|55\.30|1\.19|33\.33|
 
 ### MFCC
 
 |index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|simplenetmfcc|mfcc|0\.7375007517197553|71\.96969696969697|0\.9980084419250488|51\.28205128205128|
-|simplesimplenetmfcc|mfcc|1\.0094036775476791|46\.21212121212121|1\.1970024108886719|35\.8974358974359|
-|bigone|mfcc|0\.869238068075741|59\.09090909090909|0\.6679233551025391|71\.7948717948718|
-|notsimplenetmfcc|mfcc|0\.8487607170553768|58\.333333333333336|1\.029397201538086|53\.84615384615385|
+|bigone|mfcc|0\.87|59\.09|0\.66|71\.79|mfcc|0\.84|58\.33|1\.02|53\.84|
+|notsimplenetmfcc|mfcc|0\.84|58\.33|1\.03|53\.84|
+|simplenetmfcc|mfcc|0\.733|71\.97|0\.99|51\.28|
+|simplesimplenetmfcc|mfcc|1\.00|46\.21|1\.19|35\.89|
 
 |index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|bigone|mfcc|0\.8621444702148438|64\.39393939393939|1\.0662317276000977|64\.1025641025641|
-|notsimplenetmfcc|mfcc|0\.7360283346737132|68\.18181818181817|0\.8918451309204102|58\.97435897435898|
-|simplenetmfcc|mfcc|1\.1899316451128792|37\.121212121212125|1\.3227727890014649|25\.64102564102564|
-|simplesimplenetmfcc|mfcc|1\.261759926291073|37\.121212121212125|1\.6856094360351563|38\.46153846153847|
+|bigone|mfcc|0\.86|64\.39|1\.06|64\.10|
+|notsimplenetmfcc|mfcc|0\.73|68\.18|0\.89|58\.97|
+|simplenetmfcc|mfcc|1\.18|37\.12|1\.32|25\.64|
+|simplesimplenetmfcc|mfcc|1\.26|37\.12|1\.68|38\.46|
 
 
 |index|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|simplenetmfcc|mfcc|0\.6527907988604378|75\.75757575757575|1\.0517154693603517|43\.58974358974359|
-|notsimplenetmfcc|mfcc|0\.9132613013772404|58\.333333333333336|1\.2837324142456055|35\.8974358974359|
-|bigone|mfcc|0\.8887166976928711|65\.9090909090909|0\.8309106826782227|64\.1025641025641|
-|simplesimplenetmfcc|mfcc|1\.155884911032284|43\.18181818181818|1\.3596012115478515|20\.51282051282051|
+|bigone|mfcc|0\.88|65\.91|0\.83|64\.10|
+|notsimplenetmfcc|mfcc|0\.91|58\.33|1\.28|35\.89|
+|simplenetmfcc|mfcc|0\.65|75\.75|1\.05|43\.59|
+|simplesimplenetmfcc|mfcc|1\.15|43\.18|1\.36|20\.51|
 
 ## Late fusion
 En utilisant les meilleurs classifieurs pour les différentes modalités.
