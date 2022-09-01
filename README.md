@@ -138,11 +138,11 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 
 **On constate une baisse nette de performance avec l'utilisation des données augmentées. Ce qui est assez surprenant. Il semble qu'ajouter des données semble ajouter plus de confusion dans le modèle. Après étude approfondie, il s'avère que de nombreux samples contiennent des patterns trop caractéristiques qui nuisent sévèrement à la capacité de généralisation du modèle.** 
 
-### Spectrogramme
+### Spectrogramme (chunks 5s)
 
 |model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|resnet|spec|0\.42|97\.21|1\.13|47\.36|
+|resnet|spec|0\.74|97\.21|1\.13|47\.36|
 
 |model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
@@ -167,11 +167,11 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 |simplenetmfcc|mfcc|0\.72|72\.72|1\.08|46\.15|
 |simplesimplenetmfcc|mfcc|0\.94|55\.30|1\.19|33\.33|
 
-### MFCC
+### MFCC (chunks 5s)
 
 |model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
-|resnet|mfcc|0\.82|85\.84|0\.97|57\.89|
+|resnet|mfcc|0\.78|86\.32|0\.97|73\.68|
 
 
 |model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
@@ -216,12 +216,4 @@ Les données utilisées pour entrainer les classifieurs proviennent des chunks d
 |nb|Naive Bayes|0\.6098|0\.6743|0\.6151|0\.5945|0\.5854|
 |gbc|Gradient Boosting Classifier|0\.5854|0\.8023|0\.5857|0\.5702|0\.5714|
 |dt|Decision Tree Classifier|0\.5366|0\.6464|0\.5381|0\.565|0\.5333|
-|ada|Ada Boost Classifier|0\.5122|0\.6968|0\.5111|0\.5221|0\.5141|
-|lda|Linear Discriminant Analysis|0\.5122|0\.6069|0\.5048|0\.519|0\.5057|
-|knn|K Neighbors Classifier|0\.439|0\.642|0\.4238|0\.4366|0\.4184|
-|ridge|Ridge Classifier|0\.4146|0\.0|0\.4119|0\.4242|0\.4086|
-|svm|SVM - Linear Kernel|0\.3902|0\.0|0\.3905|0\.3838|0\.3825|
-|lr|Logistic Regression|0\.3659|0\.5614|0\.3635|0\.369|0\.3661|
-|dummy|Dummy Classifier|0\.2927|0\.0|0\.3333|0\.0857|0\.1325|
-|qda|Quadratic Discriminant Analysis|0\.2439|0\.447|0\.2667|0\.1539|0\.1728|
 
