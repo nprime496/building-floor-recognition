@@ -206,14 +206,21 @@ Un auto-encodeur a été utilisé pour apprendre des vecteurs de representation 
 
 Les données utilisées pour entrainer les classifieurs proviennent des chunks de 5s disponibles pour les 03 étages.
 
-### Resultats obtenus avec la modalité spec
+### Resultats obtenus avec la modalité spec (Autoencodeur tout dataset )
 
-|model|Model|Accuracy|AUC|Recall|Prec\.|F1|
-|---|---|---|---|---|---|---|
-|et|Extra Trees Classifier|0\.7317|0\.8734|0\.7429|0\.7969|0\.7191|
-|rf|Random Forest Classifier|0\.7073|0\.8038|0\.7151|0\.7354|0\.6961|
-|lightgbm|Light Gradient Boosting Machine|0\.6341|0\.8107|0\.6429|0\.6433|0\.6093|
-|nb|Naive Bayes|0\.6098|0\.6743|0\.6151|0\.5945|0\.5854|
-|gbc|Gradient Boosting Classifier|0\.5854|0\.8023|0\.5857|0\.5702|0\.5714|
-|dt|Decision Tree Classifier|0\.5366|0\.6464|0\.5381|0\.565|0\.5333|
 
+|index|Model|Accuracy|AUC|Recall|Prec\.|F1|Kappa|MCC|TT \(Sec\)|
+|---|---|---|---|---|---|---|---|---|---|
+|nb|Naive Bayes|0\.6667|0\.7936|0\.6796|0\.787|0\.6843|0\.498|0\.5386|0\.03|
+|knn|K Neighbors Classifier|0\.5385|0\.5881|0\.4574|0\.5291|0\.5315|0\.237|0\.2381|0\.05|
+|ridge|Ridge Classifier|0\.5385|0\.0|0\.4833|0\.5534|0\.5345|0\.2829|0\.2892|0\.04|
+|lr|Logistic Regression|0\.4872|0\.6828|0\.4|0\.4944|0\.4903|0\.1789|0\.1791|4\.16|
+
+
+### Resultats obtenus avec la modalité MFCC (Autoencodeur tout dataset )
+
+|index|Model|Accuracy|AUC|Recall|Prec\.|F1|Kappa|MCC|TT \(Sec\)|
+|---|---|---|---|---|---|---|---|---|---|
+|et|Extra Trees Classifier|0\.7436|0\.875|0\.7463|0\.7444|0\.7412|0\.6154|0\.6178|0\.67|
+|rf|Random Forest Classifier|0\.7179|0\.8317|0\.717|0\.7333|0\.7191|0\.5773|0\.5825|0\.68|
+|gbc|Gradient Boosting Classifier|0\.6667|0\.8021|0\.6651|0\.6667|0\.6667|0\.499|0\.499|9\.63|
