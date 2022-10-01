@@ -44,9 +44,9 @@ Ci-dessous, un résumé sommaire de ce qui a été fait et les résultats obtenu
 * Les données prétraîtées disponibles [ici](https://huggingface.co/datasets/nprime496/building_floor_classification/tree/main)
 -----
 
-## Tests effectués:
+# Tests effectués:
 
-### Setup 
+## Setup 
 La configuration utilisée pour obtenir les Spectrogrammes est la suivante :
 * n_fft : 1024
 * win_length : 1024
@@ -59,7 +59,7 @@ Celle utilisée pour les MFCC est la suivante:
 
 
 
-### Données Expert (échantillons de 25s) :
+## Données Expert (échantillons de 25s) :
 
 Pour rappel, les resultats obtenus avec les chunks de 5s sur les 03 étages avec la modalité spectrogramme:
 
@@ -102,6 +102,8 @@ Face à cette difficulté posée par le manque de donnnées, nous avons décidé
 
 Nous avons ajouté un nouveaau modèle pré-entrainé dans notre ensemble de modèles à tester : [Resnet34](https://huggingface.co/docs/transformers/model_doc/resnet).
 
+
+### Test classification binaire 
 Les resultats obtenus avec la modalité spectrogramme avec les chunks de 5s originaux sont:
 
 |       model          | accuracy | f1-score avg | f1 weighted |
@@ -138,7 +140,8 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 
 **On constate une baisse nette de performance avec l'utilisation des données augmentées. Ce qui est assez surprenant. Il semble qu'ajouter des données semble ajouter plus de confusion dans le modèle. Après étude approfondie, il s'avère que de nombreux samples contiennent des patterns trop caractéristiques qui nuisent sévèrement à la capacité de généralisation du modèle.** 
 
-### Spectrogramme (chunks 5s)
+### Test classifiation (03 étages)
+#### Spectrogramme (chunks 5s)
 
 |model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
@@ -167,7 +170,7 @@ Le code relatif à l'entrainement en utilisant resnet est disponible [ici](https
 |simplenetmfcc|mfcc|0\.72|72\.72|1\.08|46\.15|
 |simplesimplenetmfcc|mfcc|0\.94|55\.30|1\.19|33\.33|
 
-### MFCC (chunks 5s)
+#### MFCC (chunks 5s)
 
 |model|modality|train\_loss|train\_accuracy|test\_loss|test\_accuracy|
 |---|---|---|---|---|---|
@@ -224,3 +227,16 @@ Les données utilisées pour entrainer les classifieurs proviennent des chunks d
 |et|Extra Trees Classifier|0\.7436|0\.875|0\.7463|0\.7444|0\.7412|0\.6154|0\.6178|0\.67|
 |rf|Random Forest Classifier|0\.7179|0\.8317|0\.717|0\.7333|0\.7191|0\.5773|0\.5825|0\.68|
 |gbc|Gradient Boosting Classifier|0\.6667|0\.8021|0\.6651|0\.6667|0\.6667|0\.499|0\.499|9\.63|
+
+### Resultats obtenus avec la modalité jointe (Autoencodeur tout dataset )
+
+|index|Model|Accuracy|AUC|Recall|Prec\.|F1|Kappa|MCC|TT \(Sec\)|
+|---|---|---|---|---|---|---|---|---|---|
+|nb|Naive Bayes|0\.4412|0\.5755|0\.4741|0\.4197|0\.4054|0\.1578|0\.1663|0\.03|
+|dummy|Dummy Classifier|0\.4412|0\.0|0\.3333|0\.1946|0\.2701|0\.0|0\.0|0\.0|
+|lda|Linear Discriminant Analysis|0\.3529|0\.5564|0\.3926|0\.3685|0\.3198|0\.0685|0\.076|0\.23|
+|svm|SVM - Linear Kernel|0\.3235|0\.0|0\.3296|0\.3471|0\.3204|-0\.0013|-0\.0013|0\.13|
+|dt|Decision Tree Classifier|0\.2941|0\.451|0\.3074|0\.2731|0\.2804|-0\.0765|-0\.0772|0\.16|
+|ada|Ada Boost Classifier|0\.2941|0\.4942|0\.3222|0\.3418|0\.2653|-0\.0099|-0\.0119|1\.29|
+|lightgbm|Light Gradient Boosting Machine|0\.2941|0\.4326|0\.3074|0\.2852|0\.2762|-0\.0502|-0\.0527|1\.78|
+|lr|Logistic Regression|0\.2647|0\.489|0\.2667|0\.2989|0\.2762|-0\.1053|-0\.1083|6\.65|
